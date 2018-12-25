@@ -1,0 +1,12 @@
+# Build a image with new app version from GitLab
+docker build -t pos-backend .
+
+# Run docker in interactive-mode
+docker run --name post-backend -v ~/media:/app/pos-backend-py/DjangoBackEnd/media -p 8000:8000 pos-backend
+
+# Run docker in daemon-mode
+docker run -d --name post-backend -v ~/media:/app/pos-backend-py/DjangoBackEnd/media -p 8000:8000 pos-backend
+
+docker exec -it --entrypoint /bin/bash pos-backend
+
+
