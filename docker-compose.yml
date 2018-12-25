@@ -1,23 +1,9 @@
 version: '3'
 
 services:
-  django_backend:
-    container_name: django_backend
-    build:
-      context: .
-      dockerfile: django-backend/Dockerfile
-      args:
-        - GIT_BRANCH=develop
-        - CONDA_ENV_DEV=env
-        - CONDA_ENV_PRD=base
-        - DB_DEV=posdbt01
-        - DB_PRD=posdbt01
-    ports:
-     - "8000:8000"
-
-  django_proxy:
+  python_proxy:
     image: nginx:latest
-    container_name: django_proxy
+    container_name: python_proxy
     ports:
       - '80:80'
       - '443:443'
@@ -27,7 +13,19 @@ services:
       - ./certs:/etc/letsencrypt
       - ./certs-data:/data/letsencrypt
     depends_on:
-      - django_backend
+      - python_backend
     links:
-      - django_backend
+      - python_backend
     restart: always
+
+  python_backend:
+    container_name: python_backend
+    build:
+      context: .
+      dockerfile: python-backend/Dockerfile
+    ports:
+     - "8000:8000"
+    volumes:
+      - ./app/pos-backend-py:/app
+    restart: always
+
