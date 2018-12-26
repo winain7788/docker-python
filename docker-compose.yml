@@ -26,6 +26,6 @@ services:
     ports:
      - "8000:8000"
     volumes:
-      - ./app/pos-backend-py:/app
+      - ./app/your-python-app:/app
     restart: always
 
